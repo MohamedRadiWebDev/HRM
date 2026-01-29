@@ -82,14 +82,14 @@ export type SummaryRow = {
   department?: string;
   section?: string;
   branch?: string;
-  totalLate?: number;
-  totalEarly?: number;
-  totalMissing?: number;
-  totalAbsence?: number;
-  totalDisciplinary?: number;
-  totalOvertimeHours?: number;
-  overtimeDays?: number;
-  monthlyStatus?: string;
+  totalLate: number;
+  totalEarly: number;
+  totalMissing: number;
+  totalAbsence: number;
+  totalDisciplinary: number;
+  totalOvertimeHours: number;
+  overtimeDays: number;
+  monthlyStatus: string;
 };
 
 export type AuditEntry = {

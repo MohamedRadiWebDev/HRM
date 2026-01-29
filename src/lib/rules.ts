@@ -1,4 +1,4 @@
-import type { Employee, SpecialRule } from './types';
+import type { AuditEntry, Employee, SpecialRule } from './types';
 import { addAudit } from './utils';
 
 export type RuleContext = {
@@ -39,7 +39,7 @@ const matchesDate = (rule: SpecialRule, date: string, dayOfWeek: number) => {
 export const applySpecialRules = (
   rules: SpecialRule[],
   context: RuleContext,
-  audit: RuleApplication['appliedRules'] = []
+  audit: AuditEntry[]
 ): RuleApplication => {
   const applicable = rules
     .filter((rule) => rule.enabled)
@@ -95,7 +95,7 @@ export const applySpecialRules = (
   }
 
   if (!result.appliedRules.length) {
-    addAudit(audit as never[], 'حالات خاصة', 'لا توجد قواعد مطبقة', 'warning');
+    addAudit(audit, 'حالات خاصة', 'لا توجد قواعد مطبقة', 'warning');
   }
 
   return result;

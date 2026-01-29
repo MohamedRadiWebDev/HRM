@@ -131,8 +131,8 @@ export const computeDailyAttendance = (
 
       const mergedPenalties = {
         ...penalties,
-        ...ruleResult.penaltyOverrides,
-      };
+        ...(ruleResult.penaltyOverrides ?? {}),
+      } as typeof penalties;
 
       if (ruleResult.penaltyOverrides) {
         addAudit(audit, 'جزاءات', 'تم تطبيق تجاوز جزاءات حسب حالة خاصة', 'warning');
@@ -211,10 +211,11 @@ export const computeMonthlySummary = (rows: DailyAttendanceRow[]): SummaryRow[] 
   return Array.from(summaryMap.values());
 };
 
-export const enrichWithSearchIndex = <T extends { searchIndex?: string }>(
+export const enrichWithSearchIndex = <T>(
   rows: T[],
   getter: (row: T) => Array<string | undefined>
-) => rows.map((row) => ({ ...row, searchIndex: buildSearchIndex(getter(row)) }));
+): Array<T & { searchIndex: string }> =>
+  rows.map((row) => ({ ...row, searchIndex: buildSearchIndex(getter(row)) }));
 
 const groupPunches = (punches: Punch[]) => {
   const map = new Map<string, Punch[]>();

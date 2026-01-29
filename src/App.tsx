@@ -80,8 +80,34 @@ const mapSummaryRow = (row: SummaryRow) => ({
   'يوجد خصم': row.monthlyStatus ?? '',
 });
 
-const attendanceHeaderMap = new Set(Object.keys(mapAttendanceRow({} as DailyAttendanceRow)));
-const summaryHeaderMap = new Set(Object.keys(mapSummaryRow({} as SummaryRow)));
+const attendanceHeaderMap = new Set(
+  Object.keys(
+    mapAttendanceRow({
+      employeeCode: '',
+      name: '',
+      date: '',
+      shiftStart: '',
+      shiftEnd: '',
+      audit: [],
+    } as DailyAttendanceRow)
+  )
+);
+const summaryHeaderMap = new Set(
+  Object.keys(
+    mapSummaryRow({
+      employeeCode: '',
+      name: '',
+      totalLate: 0,
+      totalEarly: 0,
+      totalMissing: 0,
+      totalAbsence: 0,
+      totalDisciplinary: 0,
+      totalOvertimeHours: 0,
+      overtimeDays: 0,
+      monthlyStatus: '',
+    })
+  )
+);
 
 const useDebouncedValue = (value: string, delay = 200) => {
   const [debounced, setDebounced] = useState(value);
@@ -92,10 +118,10 @@ const useDebouncedValue = (value: string, delay = 200) => {
   return debounced;
 };
 
-const filterRows = <T extends { searchIndex?: string }>(rows: T[], query: string) => {
+const filterRows = <T extends { searchIndex: string }>(rows: T[], query: string) => {
   if (!query.trim()) return rows;
   const normalized = normalizeArabicName(normalizeEmployeeCode(query));
-  return rows.filter((row) => row.searchIndex?.includes(normalized));
+  return rows.filter((row) => row.searchIndex.includes(normalized));
 };
 
 const validateInputs = (inputs: ParsedInputs) => {
