@@ -50,6 +50,7 @@ export type SpecialRule = {
   params: Record<string, unknown>;
   notes?: string;
 };
+export type PenaltyKey = 'lateArrival' | 'earlyLeave' | 'missingStamp' | 'absence';
 
 export type DailyAttendanceRow = {
   employeeCode: string;

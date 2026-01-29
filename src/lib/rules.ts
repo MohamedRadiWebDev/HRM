@@ -1,4 +1,4 @@
-import type { AuditEntry, Employee, SpecialRule } from './types';
+import type { AuditEntry, Employee, PenaltyKey, SpecialRule } from './types';
 import { addAudit } from './utils';
 
 export type RuleContext = {
@@ -12,7 +12,7 @@ export type RuleApplication = {
   shiftEnd?: string;
   suppressPenalties?: boolean;
   ignoreBiometric?: boolean;
-  penaltyOverrides?: Record<string, number | ''>;
+  penaltyOverrides?: Partial<Record<PenaltyKey, number | ''>>;
   overtimeOvernight?: {
     allowLinking: boolean;
     maxOvernightHours: number;
@@ -74,7 +74,7 @@ export const applySpecialRules = (
       case 'PENALTY_OVERRIDE': {
         result.penaltyOverrides = {
           ...result.penaltyOverrides,
-          ...(rule.params.overrides as Record<string, number | ''>),
+          ...(rule.params.overrides as Partial<Record<PenaltyKey, number | ''>>),
         };
         break;
       }

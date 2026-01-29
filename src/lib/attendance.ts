@@ -129,10 +129,10 @@ export const computeDailyAttendance = (
         suppressed: Boolean(suppressionReason),
       });
 
-      const mergedPenalties = {
+      const mergedPenalties: typeof penalties = {
         ...penalties,
         ...(ruleResult.penaltyOverrides ?? {}),
-      } as typeof penalties;
+      };
 
       if (ruleResult.penaltyOverrides) {
         addAudit(audit, 'جزاءات', 'تم تطبيق تجاوز جزاءات حسب حالة خاصة', 'warning');
