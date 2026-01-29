@@ -51,6 +51,7 @@ export type SpecialRule = {
   notes?: string;
 };
 export type PenaltyKey = 'lateArrival' | 'earlyLeave' | 'missingStamp' | 'absence';
+export type PenaltyValue = number | '';
 
 export type DailyAttendanceRow = {
   employeeCode: string;

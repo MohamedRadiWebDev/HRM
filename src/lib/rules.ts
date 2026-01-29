@@ -1,4 +1,4 @@
-import type { AuditEntry, Employee, PenaltyKey, SpecialRule } from './types';
+import type { AuditEntry, Employee, PenaltyKey, PenaltyValue, SpecialRule } from './types';
 import { addAudit } from './utils';
 
 export type RuleContext = {
@@ -12,7 +12,7 @@ export type RuleApplication = {
   shiftEnd?: string;
   suppressPenalties?: boolean;
   ignoreBiometric?: boolean;
-  penaltyOverrides?: Partial<Record<PenaltyKey, number | ''>>;
+  penaltyOverrides?: Partial<Record<PenaltyKey, PenaltyValue>>;
   overtimeOvernight?: {
     allowLinking: boolean;
     maxOvernightHours: number;
@@ -34,6 +34,17 @@ const matchesDate = (rule: SpecialRule, date: string, dayOfWeek: number) => {
   if (rule.dateTo && date > rule.dateTo) return false;
   if (rule.daysOfWeek && !rule.daysOfWeek.includes(dayOfWeek)) return false;
   return true;
+};
+
+const normalizePenaltyOverrides = (overrides: Record<string, unknown>) => {
+  const result: Partial<Record<PenaltyKey, PenaltyValue>> = {};
+  (['lateArrival', 'earlyLeave', 'missingStamp', 'absence'] as PenaltyKey[]).forEach((key) => {
+    const value = overrides[key];
+    if (value === '' || typeof value === 'number') {
+      result[key] = value;
+    }
+  });
+  return result;
 };
 
 export const applySpecialRules = (
@@ -72,9 +83,10 @@ export const applySpecialRules = (
         break;
       }
       case 'PENALTY_OVERRIDE': {
+        const overrides = (rule.params.overrides ?? {}) as Record<string, unknown>;
         result.penaltyOverrides = {
           ...result.penaltyOverrides,
-          ...(rule.params.overrides as Partial<Record<PenaltyKey, number | ''>>),
+          ...normalizePenaltyOverrides(overrides),
         };
         break;
       }

@@ -2,6 +2,7 @@ import type {
   DailyAttendanceRow,
   Employee,
   Leave,
+  PenaltyValue,
   Punch,
   ShiftRuleConfig,
   SpecialRule,
@@ -312,7 +313,7 @@ const computePenalties = ({
   lastStamp?: string;
   totalWorkingHours?: number;
   suppressed: boolean;
-}) => {
+}): { lateArrival: PenaltyValue; earlyLeave: PenaltyValue; missingStamp: PenaltyValue; absence: PenaltyValue } => {
   if (suppressed) {
     return {
       lateArrival: '',
