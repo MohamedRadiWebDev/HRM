@@ -141,7 +141,7 @@ export const computeDailyAttendance = (
 
       const dailyDeductionStatus =
         [mergedPenalties.lateArrival, mergedPenalties.earlyLeave, mergedPenalties.missingStamp, mergedPenalties.absence].some(
-          (value) => value && value !== ''
+          (value) => value !== ''
         )
           ? 'يوجد جزاء'
           : '';
